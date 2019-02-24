@@ -39,7 +39,15 @@ def main():
         out_file.write('</html>')
 
 
-def init_out_file(input_file_name, output_file_name):
+def init_out_file(input_file_name: str, output_file_name: str):
+    """
+    Writes the header of an HTML file to the output file
+    :param input_file_name: Filepath to the input file
+    :type input_file_name: String
+    :param output_file_name: Filepath or the file that will be created
+    :type output_file_name: String
+    :return: None
+    """
     with open(output_file_name, 'w') as out_file:
         out_file.write('<!DOCTYPE html>\n')
         out_file.write('<html lang="en">\n')
