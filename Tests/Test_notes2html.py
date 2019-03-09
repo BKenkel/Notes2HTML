@@ -12,7 +12,7 @@ class TestInitOutFile(unittest.TestCase):
         self.actual_output = 'test_init_out.html'
 
     def test_happy_case(self):
-        notes2html.init_out_file('test_init', self.actual_output)
+        notes2html.init_output_file('test_init', self.actual_output)
 
         with open(self.actual_output, 'r') as actual:
             self.actual_contents = actual.readlines()

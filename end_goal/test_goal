@@ -1,5 +1,9 @@
-;;topic Main Topic
-;;point Main Point
+# H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6
 -- primary point
 	-- secondary point
 		-- tertiary
@@ -7,11 +11,14 @@
 				-- and so on
 				-- but one more
 	-- another secondary point
-;;point Another main point
+## Another main point
 !! important
 ;;img path_to_image
-a *bold* word
-an _underlined_ word
+a **bold** word
+another __bold__ word
+
+an *underlined* word
+another _underlined_ word
 an ~italic~ word
 
 

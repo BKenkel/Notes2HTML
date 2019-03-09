@@ -32,14 +32,14 @@ def main():
             log.warning(f'Unknown arguments will not be applied: {not_included}')
 
     log.info(f'Output file: {output_file_name}')
-    init_out_file(input_file_name, output_file_name)
+    init_output_file(input_file_name, output_file_name)
     parse_file(input_file_name, output_file_name)
     with open(output_file_name, 'a') as out_file:
         out_file.write('</body>\n')
         out_file.write('</html>')
 
 
-def init_out_file(input_file_name: str, output_file_name: str):
+def init_output_file(input_file_name: str, output_file_name: str):
     """
     Writes the header of an HTML file to the output file
     :param input_file_name: Filepath to the input file
@@ -84,10 +84,18 @@ def parse_line(out_file, line, next_line):
 
     if not line:
         out_file.write('<p>&nbsp;</p>\n')
-    elif words[0] == ';;topic':
-        out_file.write(f'<h1>{line.split(maxsplit=1)[1]}</h1>\n')
-    elif words[0] == ';;point':
-        out_file.write(f'<h2>{line.split(maxsplit=1)[1]}</h2>\n')
+    elif words[0] == '#':
+        out_file.write(f'<h1>{parse_line_contents(line.split(maxsplit=1)[1])}</h1>\n')
+    elif words[0] == '##':
+        out_file.write(f'<h2>{parse_line_contents(line.split(maxsplit=1)[1])}</h2>\n')
+    elif words[0] == '###':
+        out_file.write(f'<h3>{parse_line_contents(line.split(maxsplit=1)[1])}</h3>\n')
+    elif words[0] == '####':
+        out_file.write(f'<h4>{parse_line_contents(line.split(maxsplit=1)[1])}</h4>\n')
+    elif words[0] == '#####':
+        out_file.write(f'<h5>{parse_line_contents(line.split(maxsplit=1)[1])}</h5>\n')
+    elif words[0] == '######':
+        out_file.write(f'<h6>{parse_line_contents(line.split(maxsplit=1)[1])}</h6>\n')
 
     elif words[0] == '--':
         global last_was_list
@@ -119,36 +127,47 @@ def parse_line(out_file, line, next_line):
         out_file.write(f'<p><a href="{link}" target="_blank" rel="noopener">{link}</a></p>\n')
     else:
         # Need to parse the line
-        out_file.write('<p>')
+        out_file.write('<p>' + parse_line_contents(line) + '</p>')
 
-        open_bold = False
-        open_underline = False
-        open_italic = False
-        for char in line:
-            if char == '*':
+
+def parse_line_contents(line):
+    html_line = ''
+    open_bold = False
+    open_underline = False
+    open_italic = False
+    orig_line_length = len(line)
+    line += ' '
+    for i in range(0, orig_line_length):
+        char1 = line[i]
+        char2 = line[i + 1]
+        if char1 == '*' or char1 == '_':
+            if char2 == char1:
                 if not open_bold:
-                    out_file.write('<strong>')
+                    html_line += '<strong>'
                     open_bold = True
                 else:
-                    out_file.write('</strong>')
+                    html_line += '</strong>'
                     open_bold = False
-            elif char == '_':
-                if not open_underline:
-                    out_file.write('<span style="text-decoration: underline;">')
-                    open_underline = True
-                else:
-                    out_file.write('</span>')
-                    open_underline = False
-            elif char == '~':
+            else:
                 if not open_italic:
-                    out_file.write('<em>')
+                    html_line += '<em>'
                     open_italic = True
                 else:
-                    out_file.write('</em>')
+                    html_line += '</em>'
                     open_italic = False
-            else:
-                out_file.write(char)
-        out_file.write('</p>\n')
+
+        # elif char == '_':
+        #     if not open_underline:
+        #         html_line += '<span style="text-decoration: underline;">'
+        #         open_underline = True
+        #     else:
+        #         html_line += '</span>'
+        #         open_underline = False
+
+        else:
+            html_line += char1
+    html_line += '\n'
+    return html_line
 
 
 if __name__ == '__main__':
