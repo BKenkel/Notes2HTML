@@ -1,40 +1,32 @@
 #!/usr/bin/python
-import getopt
+import argparse
 import logging as log
 import os
-import sys
 
 last_was_list = False
 
 
 def main():
-    try:
-        input_file_name = sys.argv[1]
-    except IndexError:
-        input_file_name = input('No input file specified! Please supply a file: ')
-
-    options, not_included = getopt.gnu_getopt(sys.argv[2:], 'o:v', ['output_file=',
-                                                                    'verbose'])
-
-    output_file_name = os.path.splitext(input_file_name)[0] + '.html'
     log.basicConfig(format='%(levelname)s: %(message)s')
 
-    for option, arg in options:
-        if option in ('-o', '--output_file'):
-            output_file_name = arg
-        elif option in ('-v', '--verbose'):
-            log.getLogger().setLevel(log.DEBUG)
+    parser = argparse.ArgumentParser(description='Generate an html file from a file using the schema.')
+    parser.add_argument('--output-file', '-o', action='store', type=str)
+    parser.add_argument('--verbose', '-v', action='store_true', default=False)
+    parser.add_argument('file_to_parse', action='store')
 
-    if not_included:
-        if len(not_included) == 1:
-            log.warning(f'Unknown argument will not be applied: \'{not_included[0]}\'')
-        else:
-            log.warning(f'Unknown arguments will not be applied: {not_included}')
+    args = parser.parse_args()
+    if args.output_file is None:
+        args.output_file = os.path.splitext(args.file_to_parse)[0] + '.html'
+    if args.verbose:
+        log.getLogger().setLevel(log.DEBUG)
+    print(args)
 
-    log.info(f'Output file: {output_file_name}')
-    init_out_file(input_file_name, output_file_name)
-    parse_file(input_file_name, output_file_name)
-    with open(output_file_name, 'a') as out_file:
+    log.info(f'Output file: {args.output_file}')
+    init_out_file(args.file_to_parse, args.output_file)
+    parse_file(args.file_to_parse, args.output_file)
+
+    # Cleanup
+    with open(args.output_file, 'a') as out_file:
         out_file.write('</body>\n')
         out_file.write('</html>')
 
