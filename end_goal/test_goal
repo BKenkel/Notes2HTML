@@ -1,20 +1,50 @@
-;;topic Main Topic
-;;point Main Point
--- primary point
-	-- secondary point
-		-- tertiary
-			-- so on
-				-- and so on
-				-- but one more
-	-- another secondary point
-;;point Another main point
+[TOC]
+
+#Main Topic
+##Main Point
+- Primary point
+    - secondary point
+	    - tertiary
+	        - so on
+		        - and so on
+		        - but one more
+    - another secondary point
+
+
+##Another main point
+
+
 !! important
-;;img path_to_image
-a *bold* word
-an _underlined_ word
-an ~italic~ word
 
 
 
+![image name](end_goal/image.png "image text")
 
-<https://github.com>
+
+
+a **bold** word
+an *italic* word
+filling an abbreviation: HTML
+*[HTML]: Hyper Text Markup Language
+referencing the same abbr: HTML
+
+
+definition test
+:   this thing
+
+
+
+First Header    | Second Header
+--------------- | -------------
+Content Cell    | Content Cell
+Content Cell    | Content Cell
+
+
+
+how to do a task:
+
+1. task 1
+2. task 2
+3. task 3
+
+[Some link](https://github.com)
